@@ -1,0 +1,74 @@
+from abc import ABC, abstractmethod
+
+
+class PaymentStrategy(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+
+class CreditCardPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Payment of ₹{amount} made using Credit Card.")
+
+
+class UPIPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Payment of ₹{amount} made using UPI.")
+
+
+class PayPalPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Payment of ₹{amount} made using PayPal.")
+
+
+class CashPayment(PaymentStrategy):
+    def pay(self, amount):
+        print(f"Payment of ₹{amount} made using Cash.")
+
+
+class PaymentProcessor:
+    def _init_(self):
+        self.strategy = None
+
+    def set_payment_method(self, strategy):
+        self.strategy = strategy
+
+    def process_payment(self, amount):
+        if self.strategy is None:
+            print("Please select a payment method first.")
+        else:
+            self.strategy.pay(amount)
+
+
+processor = PaymentProcessor()
+
+while True:
+    print("\n===== Payment Processing System =====")
+    print("1. Credit Card")
+    print("2. UPI")
+    print("3. PayPal")
+    print("4. Cash")
+    print("5. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 5:
+        print("Thank you!")
+        break
+
+    amount = float(input("Enter payment amount: ₹"))
+
+    if choice == 1:
+        processor.set_payment_method(CreditCardPayment())
+    elif choice == 2:
+        processor.set_payment_method(UPIPayment())
+    elif choice == 3:
+        processor.set_payment_method(PayPalPayment())
+    elif choice == 4:
+        processor.set_payment_method(CashPayment())
+    else:
+        print("Invalid choice!")
+        continue
+
+    processor.process_payment(amount)
